@@ -70,7 +70,6 @@ int KAM_CreateObstacles(char KAM_GameField [] [DIMENSION], int amount){
     for (; i < amount; ++i) {
         randomx = (rand() % (8 - 0) - 0 + 1) - 1;
         randomy = (rand() % (8 - 0) - 0 + 1) - 1;
-        printf("I = %d: %d, %d \n", i, randomx, randomy);
         if(KAM_GameField[randomx][randomy] != FREI || (randomx == 'M'%8 && randomy == 'K'%8))
 		{
 			i--;
@@ -83,12 +82,10 @@ int KAM_CreateObstacles(char KAM_GameField [] [DIMENSION], int amount){
 }
 
 int KAM_MoveOneStep(char KAM_GameField [] [DIMENSION], struct Robot *roboter) {
-    printf("Y: %d, X: %d, Richtung: %c \n", roboter->y, roboter->x, roboter->richtung);
     switch(roboter->richtung)
 	{
         
 		case 'l':
-            printf("IN SWITCH - l");
             if(roboter->x - 1 < 0 || KAM_GameField [roboter->x - 1] [roboter->y] == BESETZT) {
                 roboter->richtung = 'o';
                 KAM_MoveOneStep(KAM_GameField, roboter);
@@ -98,7 +95,6 @@ int KAM_MoveOneStep(char KAM_GameField [] [DIMENSION], struct Robot *roboter) {
             }
             break;
         case 'r':
-            printf("IN SWITCH - r");
             if(roboter->x + 1 > 7 || KAM_GameField [roboter->x + 1] [roboter->y] == BESETZT) {
                 roboter->richtung = 'u';
                 KAM_MoveOneStep(KAM_GameField, roboter);
@@ -108,7 +104,6 @@ int KAM_MoveOneStep(char KAM_GameField [] [DIMENSION], struct Robot *roboter) {
             }
             break;
         case 'o':
-            printf("IN SWITCH - o");
             if(roboter->y - 1 < 0 || KAM_GameField [roboter->x] [roboter->y-1] == BESETZT) {
                 roboter->richtung = 'r';
                 KAM_MoveOneStep(KAM_GameField, roboter);
@@ -118,7 +113,6 @@ int KAM_MoveOneStep(char KAM_GameField [] [DIMENSION], struct Robot *roboter) {
             }
             break;
         case 'u':
-            printf("IN SWITCH - u");
             if(roboter->y + 1 > 7 || KAM_GameField [roboter->x] [roboter->y + 1] == BESETZT) {
                 roboter->richtung = 'l';
                 KAM_MoveOneStep(KAM_GameField, roboter);
@@ -128,7 +122,6 @@ int KAM_MoveOneStep(char KAM_GameField [] [DIMENSION], struct Robot *roboter) {
             }
             break;
     }
-    printf("Y: %d, X: %d, Richtung: %c \n", roboter->y, roboter->x, roboter->richtung);
     return 0;
 }
 
@@ -149,11 +142,12 @@ int KAM_PrintGame(char KAM_GameField [] [DIMENSION], struct Robot *roboter) {
 }
 
 int KAM_StepByStep(char KAM_GameField [] [DIMENSION], struct Robot * roboter) {
-    char buffer [10];
-
-    fgets(buffer, sizeof(buffer), stdin);
+    char buffer [10] = "";
+    getchar();
+    
 
     while(strcmp(buffer, "quit\n") != 0){
+        fgets(buffer, sizeof(buffer), stdin);
         KAM_MoveOneStep(KAM_GameField, roboter);
 
         KAM_PrintGame(KAM_GameField, roboter);
