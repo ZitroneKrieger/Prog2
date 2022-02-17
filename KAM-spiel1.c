@@ -146,8 +146,11 @@ int KAM_StepByStep(char KAM_GameField [] [DIMENSION], struct Robot * roboter) {
     getchar();
     
 
-    while(strcmp(buffer, "quit\n") != 0){
+    while(1){
         fgets(buffer, sizeof(buffer), stdin);
+        if(strcmp(buffer, "quit\n") == 0) {
+            break;
+        }
         KAM_MoveOneStep(KAM_GameField, roboter);
 
         KAM_PrintGame(KAM_GameField, roboter);
